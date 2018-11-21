@@ -69,6 +69,8 @@ def get_src_file():
         src_version = get_src_version(projectFile)
         fieldsrcversion.config(text=src_version)
         entryTextDestV.set(int(src_version)-1)
+        file_menu.entryconfig("Fermer le fichier", state='normal')
+
 def ok_message():
     messagebox.showinfo('Opération terminée', "L'enregistrement a été effectué")
     clear()
@@ -83,6 +85,7 @@ def clear():
     entryTextfile.set('Ouvrir un fichier...')
     entryTextDestV.set("")
     fieldsrcversion.config(text="")
+    file_menu.entryconfig("Fermer le fichier", state='disabled')
 
 def textToVersion(argument):
     version = 35
@@ -97,12 +100,39 @@ def setPreconf(var):
     entry = var.get()
     entryTextDestV.set(textToVersion(entry))
 
+def display_version():
+    temp_filename = filedialog.askopenfilename(initialdir = "./",title = "Ouvrir un projet", filetypes = (("Projets Premiere Pro","*.prproj"),("Tous les fichiers","*.*")))
+    if temp_filename is None:
+        return
+    tempFile = open_file(temp_filename)
+    if tempFile:
+        messagebox.showinfo('Détection de version', "Le fichier de projet sélectionné utilise la version de fichier " + get_src_version(tempFile))
+
 ##------- Variables globales --------##
 
 
 ##------- Création de la fenêtre -------##
 fen = Tk()
 fen.title('Premiere Converter')                # ---> On donne un titre à la fenêtre
+
+# ##-------- Création du menu ---------##
+main_menu = Menu(fen)
+
+file_menu = Menu(main_menu, tearoff=0)
+file_menu.add_command(label="Ouvrir un fichier", command=get_src_file)
+file_menu.add_command(label="Fermer le fichier", command=clear, state='disabled')
+file_menu.add_separator()
+file_menu.add_command(label="Quitter", command=fen.quit)
+
+tools_menu = Menu(main_menu, tearoff=0)
+tools_menu.add_command(label="Déterter la version d'un fichier...", command=display_version)
+
+main_menu.add_cascade(label="Fichier", menu=file_menu)
+main_menu.add_cascade(label="Options", menu=tools_menu)
+
+fen.config(menu=main_menu)
+
+
 
 # ##-------- Création des zones de texte ---------##
 tmp = Label(fen, text='Convertir un projet Premiere Pro vers une ancienne verison')
