@@ -5,7 +5,6 @@
 #
 ##------- Importation des modules --------##
 from tkinter import *
-import Pmw
 from tkinter import filedialog
 from tkinter import messagebox
 from lxml import etree
@@ -85,12 +84,24 @@ def clear():
     entryTextDestV.set("")
     fieldsrcversion.config(text="")
 
+def textToVersion(argument):
+    version = 35
+    switcher = {
+        "CC 2018 (v12.0)" : "34",
+        "CC 2018 (v12.1)" : "35",
+        "CC 2019 (v13.0)" : "36",
+    }
+    return switcher.get(argument, version)
+
+def setPreconf(var):
+    entry = var.get()
+    entryTextDestV.set(textToVersion(entry))
+
 ##------- Variables globales --------##
 
 
 ##------- Création de la fenêtre -------##
-# fen = Tk()
-fen = Pmw.initialise()
+fen = Tk()
 fen.title('Premiere Converter')                # ---> On donne un titre à la fenêtre
 
 # ##-------- Création des zones de texte ---------##
@@ -118,20 +129,20 @@ entryTextDestV= StringVar()
 destinationversion = Entry(fen, width=3, textvariable=entryTextDestV)
 destinationversion.grid(row= 3, column = 1 ,padx=5, pady=5)
 
-combo = Pmw.ComboBox(fen, labelpos = NW,
-                     label_text = 'Choisissez la couleur :',
-                     scrolledlist_items = ["hey", "heyhey"],
-                     listheight = 150
-                    )
-combo.grid(row=4, column=1, columnspan=2, padx=5, pady=5)
+choixdef = StringVar(fen)
+choixdef.set("Personnalisé") # initial value
+choixdef.trace("w", lambda name, index, mode, sv=choixdef: setPreconf(choixdef))
+option = OptionMenu(fen, choixdef, "Personnalisé", "CC 2018 (v12.0)", "CC 2018 (v12.1)", "CC 2019 (v13.0)")
+option.grid(row=4, column=0, columnspan=2, padx=5, pady=5)
 
 tmp = Button(fen, text="Quitter", command=fen.destroy)
-tmp.grid(row=5, column=0, padx=5, pady=5)
+tmp.grid(row=5, column=1, padx=5, pady=5)
 
 tmp = Button(fen, text="Convertir", command=convert, width=30)
 tmp.grid(row=5, column=0, padx=5, pady=5)
 
 
+option.bind("Button-")
 ##------- Programme principal -------##
 # converted_data = open_file(), convert_data)
 # write_output_file(converted_data)
