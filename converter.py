@@ -8,6 +8,7 @@ from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
 from lxml import etree
+import webbrowser
 import gzip
 import shutil
 import tempfile
@@ -109,6 +110,22 @@ def display_version():
     if tempFile:
         messagebox.showinfo('Détection de version', "Le fichier de projet sélectionné utilise la version de fichier " + get_src_version(tempFile))
 
+def about():
+    global about_window
+    about_window = Tk() # On crée la fenêtre et on ajoute les éléments
+    about_window.title('À propos')
+    info = Label(about_window, text='PremiereDowngrade par Léo Boyer')
+    info.pack(pady=3, padx=10, fill=BOTH)
+    info = Label(about_window, text='Distribué sous License MIT')
+    info.pack(pady=3, padx=10, fill=BOTH)
+    lien = Label(about_window, text="Le projet sur GitHub", fg="blue", cursor="hand2")
+    lien.pack(pady=3, padx=10, fill=BOTH)
+    lien.bind("<Button-1>", lambda:webbrowser.open_new(r"https://www.github.com/leoboyerbx/premiere-downgrade"))
+
+
+    valider = Button(about_window, text='Ok', command=about_window.destroy)
+    valider.pack(pady=5, padx=10, fill=BOTH)
+
 ##------- Variables globales --------##
 
 
@@ -127,9 +144,12 @@ file_menu.add_command(label="Quitter", command=fen.quit)
 
 tools_menu = Menu(main_menu, tearoff=0)
 tools_menu.add_command(label="Détecter la version d'un fichier...", command=display_version)
+help_menu = Menu(main_menu, tearoff=0)
+help_menu.add_command(label="À propos", command=about)
 
 main_menu.add_cascade(label="Fichier", menu=file_menu)
 main_menu.add_cascade(label="Options", menu=tools_menu)
+main_menu.add_cascade(label="Aide", menu=help_menu)
 
 fen.config(menu=main_menu)
 
