@@ -90,6 +90,7 @@ def clear():
 def textToVersion(argument):
     version = ""
     switcher = {
+        "Multi-compatible (si version inconnue)" : "1",
         "CC 2018 (v12.0)" : "34",
         "CC 2018 (v12.1)" : "35",
         "CC 2019 (v13.0)" : "36",
@@ -170,7 +171,7 @@ tmp.pack(side=LEFT)
 choixdef = StringVar()
 choixdef.set("Personnalisé") # initial value
 choixdef.trace("w", lambda name, index, mode, sv=choixdef: setPreconf(choixdef))
-option = OptionMenu(preconfig_chooser, choixdef, "Personnalisé", "CC 2018 (v12.0)", "CC 2018 (v12.1)", "CC 2019 (v13.0)")
+option = OptionMenu(preconfig_chooser, choixdef, "Personnalisé", "CC 2018 (v12.0)", "CC 2018 (v12.1)", "CC 2019 (v13.0)", "Multi-compatible (si version inconnue)")
 option.pack(side=RIGHT)
 
 version_chooser = Frame(zone_output)
