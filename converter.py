@@ -67,7 +67,7 @@ def get_src_file():
     projectFile = open_file(src_filename)
     if projectFile:
         src_version = get_src_version(projectFile)
-        fieldsrcversion.config(text=src_version)
+        fieldsrcversion.config(text="Version du Projet source : " + src_version)
         entryTextDestV.set(int(src_version)-1)
         file_menu.entryconfig("Fermer le fichier", state='normal')
 
@@ -84,11 +84,11 @@ def convert():
 def clear():
     entryTextfile.set('Ouvrir un fichier...')
     entryTextDestV.set("")
-    fieldsrcversion.config(text="")
+    fieldsrcversion.config(text="Version du Projet source : ")
     file_menu.entryconfig("Fermer le fichier", state='disabled')
 
 def textToVersion(argument):
-    version = 35
+    version = ""
     switcher = {
         "CC 2018 (v12.0)" : "34",
         "CC 2018 (v12.1)" : "35",
@@ -125,7 +125,7 @@ file_menu.add_separator()
 file_menu.add_command(label="Quitter", command=fen.quit)
 
 tools_menu = Menu(main_menu, tearoff=0)
-tools_menu.add_command(label="Déterter la version d'un fichier...", command=display_version)
+tools_menu.add_command(label="Détecter la version d'un fichier...", command=display_version)
 
 main_menu.add_cascade(label="Fichier", menu=file_menu)
 main_menu.add_cascade(label="Options", menu=tools_menu)
@@ -136,43 +136,62 @@ fen.config(menu=main_menu)
 
 # ##-------- Création des zones de texte ---------##
 tmp = Label(fen, text='Convertir un projet Premiere Pro vers une ancienne verison')
-tmp.grid(row= 0, column = 0, columnspan=2,padx=5, pady=5)
+tmp.pack()
+
+
+# Source 
+zone_input = LabelFrame(fen, text="Fichier source", padx=7, pady=7)
+zone_input.pack(fill="both", expand="yes", padx=10, pady=10)
+
+file_chooser = Frame(zone_input)
+file_chooser.pack(pady=5)
 
 entryTextfile = StringVar()
-fieldname = Entry(fen, text="", width=50, state="readonly", textvariable=entryTextfile)
+fieldname = Entry(file_chooser, text="", width=50, state="readonly", textvariable=entryTextfile)
 entryTextfile.set('Ouvrir un fichier...')
 
-fieldname.grid(row= 1, column = 0,padx=5, pady=5)
+fieldname.pack(side=LEFT, padx=10)
 
-browse = Button(fen, text="Parcourir", command=get_src_file)
-browse.grid(row= 1, column = 1,padx=5, pady=5)
+browse = Button(file_chooser, text="Parcourir", command=get_src_file)
+browse.pack(side=RIGHT)
 
-tmp = Label(fen, text="Version du Projet source : ", justify="left")
-tmp.grid(row= 2, column = 0 ,padx=5, pady=5)
-fieldsrcversion = Label(fen, text="", width=3)
-fieldsrcversion.grid(row= 2, column = 1 ,padx=5, pady=5)
+fieldsrcversion = Label(zone_input, text="Version du Projet source : ")
+fieldsrcversion.pack(pady=5)
+# Destination
+zone_output = LabelFrame(fen, text="Fichier de destination", padx=7, pady=7)
+zone_output.pack(fill="both", expand="yes", padx=10, pady=10)
 
-tmp = Label(fen, text='Convertir vers: ', justify="right")
-tmp.grid(row= 3, column = 0,padx=5, pady=5)
+preconfig_chooser = Frame(zone_output)
+preconfig_chooser.pack(pady=5)
 
-entryTextDestV= StringVar()
-destinationversion = Entry(fen, width=3, textvariable=entryTextDestV)
-destinationversion.grid(row= 3, column = 1 ,padx=5, pady=5)
+tmp = Label(preconfig_chooser, text='Préconfiguration: ')
+tmp.pack(side=LEFT)
 
-choixdef = StringVar(fen)
+choixdef = StringVar()
 choixdef.set("Personnalisé") # initial value
 choixdef.trace("w", lambda name, index, mode, sv=choixdef: setPreconf(choixdef))
-option = OptionMenu(fen, choixdef, "Personnalisé", "CC 2018 (v12.0)", "CC 2018 (v12.1)", "CC 2019 (v13.0)")
-option.grid(row=4, column=0, columnspan=2, padx=5, pady=5)
+option = OptionMenu(preconfig_chooser, choixdef, "Personnalisé", "CC 2018 (v12.0)", "CC 2018 (v12.1)", "CC 2019 (v13.0)")
+option.pack(side=RIGHT)
 
-tmp = Button(fen, text="Quitter", command=fen.destroy)
-tmp.grid(row=5, column=1, padx=5, pady=5)
+version_chooser = Frame(zone_output)
+version_chooser.pack(pady=5)
 
-tmp = Button(fen, text="Convertir", command=convert, width=30)
-tmp.grid(row=5, column=0, padx=5, pady=5)
+tmp = Label(version_chooser, text='Convertir vers: ')
+tmp.pack(side=LEFT)
 
+entryTextDestV= StringVar()
+destinationversion = Entry(version_chooser, width=3, textvariable=entryTextDestV)
+destinationversion.pack(side=RIGHT)
 
-option.bind("Button-")
+bottom_buttons = Frame(fen)
+bottom_buttons.pack(side=RIGHT, pady=10, padx=10)
+
+tmp = Button(bottom_buttons, text="Convertir", command=convert, width=30)
+tmp.pack(side=RIGHT)
+
+tmp = Button(bottom_buttons, text="Quitter", command=fen.destroy, width=10)
+tmp.pack(side=LEFT, padx=10)
+
 ##------- Programme principal -------##
 # converted_data = open_file(), convert_data)
 # write_output_file(converted_data)
