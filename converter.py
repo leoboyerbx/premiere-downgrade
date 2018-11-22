@@ -149,7 +149,7 @@ help_menu = Menu(main_menu, tearoff=0)
 help_menu.add_command(label="À propos", command=about)
 
 main_menu.add_cascade(label="Fichier", menu=file_menu)
-main_menu.add_cascade(label="Options", menu=tools_menu)
+main_menu.add_cascade(label="Outils", menu=tools_menu)
 main_menu.add_cascade(label="Aide", menu=help_menu)
 
 fen.config(menu=main_menu)
