@@ -120,7 +120,7 @@ def about():
     info.pack(pady=3, padx=10, fill=BOTH)
     lien = Label(about_window, text="Le projet sur GitHub", fg="blue", cursor="hand2")
     lien.pack(pady=3, padx=10, fill=BOTH)
-    lien.bind("<Button-1>", lambda:webbrowser.open_new(r"https://www.github.com/leoboyerbx/premiere-downgrade"))
+    lien.bind("<Button-1>", lambda event:webbrowser.open_new(r"https://www.github.com/leoboyerbx/premiere-downgrade"))
 
 
     valider = Button(about_window, text='Ok', command=about_window.destroy)
