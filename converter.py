@@ -69,7 +69,7 @@ def get_src_file():
     if projectFile:
         src_version = get_src_version(projectFile)
         fieldsrcversion.config(text="Version du Projet source : " + src_version)
-        entryTextDestV.set(int(src_version)-1)
+        entryTextDestV.set(34)
         file_menu.entryconfig("Fermer le fichier", state='normal')
 
 def ok_message():
