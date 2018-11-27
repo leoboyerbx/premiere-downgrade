@@ -40,7 +40,7 @@ def convert_data(projectFile, versionToConvert):
     for project in (projectFile.xpath("/PremiereData/Project")):
         if project.get('Version'):
             project.set('Version', versionToConvert)
-            return etree.tostring(projectFile, pretty_print=True)
+            return etree.tostring(projectFile, encoding="utf-8", pretty_print=True)
 
 def write_output_file(data, callback):
     output_file = filedialog.asksaveasfilename(initialdir = "./",title = "Enregistrer", defaultextension=".prproj", filetypes = (("Projets Premiere Pro","*.prproj"),("Tous les fichiers","*.*")))
