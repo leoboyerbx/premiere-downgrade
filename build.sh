@@ -18,4 +18,4 @@ Build only one file: $isof
 
 Program will be compiled to dist/ folder.
 END
-pyinstaller converter.py --icon=icon.ico --noconsole -n PremiereDowngrade-v${version} ${onefile}
+pyinstaller converter.py --icon=icon.ico --noconsole -n PremiereDowngrade-v${version}-IUT ${onefile}
